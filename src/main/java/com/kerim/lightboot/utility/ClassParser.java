@@ -1,13 +1,15 @@
 package com.kerim.lightboot.utility;
 
+import com.kerim.lightboot.exceptions.NoPathFound;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
-public class ClassHandler {
+public class ClassParser {
 
-    public ClassHandler() {}
+    public ClassParser() {}
 
     private String[] getJavaPaths() throws IOException {
         Path start = Path.of("src/main/java");
@@ -18,6 +20,8 @@ public class ClassHandler {
                     .map(Path::toString)
                     .filter(string -> string.endsWith(".java"))
                     .toArray(String[]::new);
+        } catch(IOException | NoPathFound e) {
+            throw new NoPathFound("ClassParser.getJavaPaths() failed to find a java path.");
         }
     }
 
@@ -33,10 +37,18 @@ public class ClassHandler {
         return result;
     }
 
+    public String[] getParsedJavaClassPaths() throws IOException {
+        try{
+            String[] javaPaths = getJavaPaths();
+            return parseJavaPaths(javaPaths);
+        } catch(NoPathFound e) {
+            throw new NoPathFound("ClassParser.getPaths() failed due to IO error or due to ClassParser.parseJavaPaths()");
+        }
+    }
+
     public void test() throws IOException {
         String[] javaPaths = getJavaPaths();
         String[] packagePaths = parseJavaPaths(javaPaths);
-
 
         for(String javaPath : packagePaths) {
             System.out.println(javaPath);
