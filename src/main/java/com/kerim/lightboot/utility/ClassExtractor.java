@@ -1,17 +1,18 @@
 package com.kerim.lightboot.utility;
 
+import com.kerim.lightboot.application.ApplicationComponent;
+
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
-public class ClassExtractor {
+public class ClassExtractor implements ApplicationComponent {
+    private final String LOGGER_STRING_RETURN = "[ClassExtractor]";
 
     public ClassExtractor() {}
 
     public Class<?> getClass(String className) {
-        Class<?> clazz = null;
         try {
-            clazz = Class.forName(className);
-            return clazz;
+            return Class.forName(className);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -46,5 +47,10 @@ public class ClassExtractor {
         Class<?> claz = getClass(className);
         assert claz != null;
         System.out.println(claz);
+    }
+
+    @Override
+    public String startup() {
+        return LOGGER_STRING_RETURN;
     }
 }

@@ -1,14 +1,21 @@
 package com.kerim;
 
+import com.kerim.lightboot.Test;
 import com.kerim.lightboot.application.LightBootApplication;
+import com.kerim.lightboot.application.headers.Header;
 
 import java.io.IOException;
 
 public class Main {
     static void main(String[] args) throws IOException {
         long start = System.currentTimeMillis();
+        System.out.println(System.getProperty("os.name"));
 
         LightBootApplication.run();
+
+        Header header = new Header("Test", Test.class);
+        Test t = LightBootApplication.getInstance().getContext().get(header);
+        System.out.println(t.getS());
 
         getTime(start);
     }

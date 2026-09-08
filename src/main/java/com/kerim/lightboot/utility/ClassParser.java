@@ -1,5 +1,6 @@
 package com.kerim.lightboot.utility;
 
+import com.kerim.lightboot.application.ApplicationComponent;
 import com.kerim.lightboot.exceptions.NoPathFound;
 
 import java.io.IOException;
@@ -7,7 +8,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
-public class ClassParser {
+public class ClassParser implements ApplicationComponent {
+    private final String LOGGER_STRING_RETURN = "[ClassParser]";
+    private final String OS_SLASH = getOSFileSystemSlashes();
 
     public ClassParser() {}
 
@@ -31,7 +34,7 @@ public class ClassParser {
         for (int i = 0; i < result.length; i++) {
             result[i] = javaPaths[i].substring("src/main/java/".length());
             result[i] = result[i].replace(".java", "");
-            result[i] = result[i].replace("\\", ".");
+            result[i] = result[i].replace(OS_SLASH, ".");
         }
 
         return result;
@@ -55,5 +58,18 @@ public class ClassParser {
         }
     }
 
+    private String getOSFileSystemSlashes() {
+        String osName = System.getProperty("os.name");
+        if(osName.contains("Windows")) {
+            return "\\";
+        } else {
+            return "/";
+        }
+    }
 
+    @Override
+    public String startup() {
+        getOSFileSystemSlashes();
+        return LOGGER_STRING_RETURN;
+    }
 }

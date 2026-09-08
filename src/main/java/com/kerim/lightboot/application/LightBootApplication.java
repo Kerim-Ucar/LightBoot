@@ -112,8 +112,9 @@ public class LightBootApplication {
     }
 
     private void start() {
+        registerComponent(classParser);
         registerComponent(contextHandler);
-        logger.info("LightBoot application started");
+        registerComponent(annotatedClassesHolder);
     }
 
     public Context getContext() {
@@ -124,10 +125,10 @@ public class LightBootApplication {
         return contextHandler;
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> T registerComponent(ApplicationComponent component) {
+    private void registerComponent(ApplicationComponent component) {
         component.startup();
         applicationComponents.add(component);
-        return (T) component;
     }
+
+
 }
