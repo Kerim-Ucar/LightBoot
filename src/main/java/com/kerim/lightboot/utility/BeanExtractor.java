@@ -1,7 +1,5 @@
 package com.kerim.lightboot.utility;
 
-import com.kerim.lightboot.Test;
-import com.kerim.lightboot.TestBeanObj;
 import com.kerim.lightboot.annotations.application.Bean;
 
 import java.lang.reflect.Method;
@@ -36,9 +34,4 @@ public class BeanExtractor {
         }
     }
 
-    public void test() {
-        Method[] beanMethods = getBeanMethods(TestBeanObj.class);
-        Test t = getBeanObject(beanMethods[0]);
-        assert t.getS().equals("Test");
-    }
 }

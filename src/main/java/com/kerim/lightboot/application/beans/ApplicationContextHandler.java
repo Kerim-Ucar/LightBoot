@@ -1,6 +1,5 @@
 package com.kerim.lightboot.application.beans;
 
-import com.kerim.lightboot.TestBeanObj;
 import com.kerim.lightboot.annotations.application.Bean;
 import com.kerim.lightboot.application.AnnotatedClassesHolder;
 import com.kerim.lightboot.application.ApplicationComponent;
@@ -34,10 +33,8 @@ public class ApplicationContextHandler implements ContextHandler, ApplicationCom
     public void addBeansToContext() {
         annotatedClassesHolder.startup();
         ArrayList<HeaderBeanPair[]> headerBeanPairs = getBeansFromClasses(annotatedClassesHolder.getConfigurationClasses());
-        ArrayList<HeaderBeanPair[]> headerBeanPairs2 = getBeansFromClasses(annotatedClassesHolder.getServiceClasses());
 
         addBeansToContext(headerBeanPairs);
-        addBeansToContext(headerBeanPairs2);
     }
 
     public void addBeansToContext(ArrayList<HeaderBeanPair[]> headerBeanPairs) {
@@ -78,6 +75,7 @@ public class ApplicationContextHandler implements ContextHandler, ApplicationCom
         return headerBeanPairs;
     }
 
+
     public Context getContext() {
         return applicationContext;
     }
@@ -86,17 +84,6 @@ public class ApplicationContextHandler implements ContextHandler, ApplicationCom
         return annotatedClassesHolder;
     }
 
-    public void test() {
-        HeaderBeanPair[] beans = getBeans(TestBeanObj.class);
-        System.out.println(beans.length == 0);
-        for (HeaderBeanPair header : beans) {
-            System.out.println(header.toString());
-        }
-    }
-
-    public void test2() {
-        startup();
-    }
 
     @Override
     public String startup() {

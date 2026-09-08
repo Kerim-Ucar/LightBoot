@@ -6,6 +6,7 @@ import com.kerim.lightboot.application.beans.HeaderBeanPairFactory;
 import com.kerim.lightboot.application.beans.HeaderBeanPairFactoryImpl;
 import com.kerim.lightboot.application.context.ApplicationContext;
 import com.kerim.lightboot.application.context.Context;
+import com.kerim.lightboot.application.headers.Header;
 import com.kerim.lightboot.application.headers.HeaderFactory;
 import com.kerim.lightboot.application.headers.SimpleHeaderFactory;
 import com.kerim.lightboot.utility.AutoInjectExtractor;
@@ -14,6 +15,8 @@ import com.kerim.lightboot.utility.ClassExtractor;
 import com.kerim.lightboot.utility.ClassParser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class LightBootApplication {
@@ -114,7 +117,34 @@ public class LightBootApplication {
     private void start() {
         registerComponent(classParser);
         registerComponent(contextHandler);
-        registerComponent(annotatedClassesHolder);
+        injectBeans();
+    }
+
+    private void injectBeans() {
+        injectBeans(annotatedClassesHolder.getServiceClasses());
+    }
+
+    private void injectBeans(Class<?>[] classes) {
+        Map<Class<?>, Object> serviceInstances = new HashMap<>();
+
+        for (Class<?> clazz : classes) {
+            if (applicationContext.isRegistered(clazz)) {
+                continue;
+            }
+
+            Object host = autoInjectExtractor.createServiceInstance(clazz, applicationContext);
+            serviceInstances.put(clazz, host);
+            applicationContext.register(headerFactory.createHeader(clazz), host);
+        }
+
+        for (Class<?> clazz : classes) {
+            Object host = serviceInstances.get(clazz);
+            if (host == null) {
+                continue;
+            }
+
+            autoInjectExtractor.injectAutoInjectFields(host, clazz, applicationContext);
+        }
     }
 
     public Context getContext() {
