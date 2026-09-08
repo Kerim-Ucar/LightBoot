@@ -2,7 +2,7 @@ package com.kerim.lightboot.utility;
 
 import com.kerim.lightboot.Test;
 import com.kerim.lightboot.TestBeanObj;
-import com.kerim.lightboot.annotations.Bean;
+import com.kerim.lightboot.annotations.application.Bean;
 
 import java.lang.reflect.Method;
 

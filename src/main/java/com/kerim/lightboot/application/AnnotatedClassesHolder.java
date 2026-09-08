@@ -1,15 +1,16 @@
 package com.kerim.lightboot.application;
 
-import com.kerim.lightboot.annotations.Configuration;
-import com.kerim.lightboot.annotations.Service;
+import com.kerim.lightboot.annotations.application.Configuration;
+import com.kerim.lightboot.annotations.application.Service;
 import com.kerim.lightboot.exceptions.NoPathFound;
-import com.kerim.lightboot.utility.BeanExtractor;
 import com.kerim.lightboot.utility.ClassExtractor;
 import com.kerim.lightboot.utility.ClassParser;
 
 import java.io.IOException;
 
 public class AnnotatedClassesHolder implements ApplicationComponent{
+    private final String LOGGER_STRING_RETURN = "[AnnotatedClassesHolder]";
+
     public static final int ANNOTATED_TYPES = 2;
 
     private String[] allClassPaths;
@@ -40,7 +41,7 @@ public class AnnotatedClassesHolder implements ApplicationComponent{
     }
 
     @Override
-    public void startup() {
+    public String startup() {
         try {
             allClassPaths = this.classParser.getParsedJavaClassPaths();
             configurationClasses = this.classExtractor.getClasses(allClassPaths, Configuration.class);
@@ -49,6 +50,6 @@ public class AnnotatedClassesHolder implements ApplicationComponent{
         } catch (IOException | NoPathFound exception) {
             throw new NoPathFound(exception.getMessage());
         }
-        System.out.println("AnnotatedClassesHolder startup");
+        return LOGGER_STRING_RETURN;
     }
 }

@@ -1,7 +1,7 @@
 package com.kerim.lightboot;
 
-import com.kerim.lightboot.annotations.Bean;
-import com.kerim.lightboot.annotations.Configuration;
+import com.kerim.lightboot.annotations.application.Bean;
+import com.kerim.lightboot.annotations.application.Configuration;
 
 @Configuration
 public class TestBeanObj {
@@ -11,7 +11,7 @@ public class TestBeanObj {
         return new Test("Test");
     }
 
-    @Bean()
+    @Bean("test2")
     public Test test2() {
         return new Test("Test2");
     }

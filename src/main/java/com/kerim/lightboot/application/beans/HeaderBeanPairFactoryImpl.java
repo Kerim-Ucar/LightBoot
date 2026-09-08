@@ -3,12 +3,10 @@ package com.kerim.lightboot.application.beans;
 import com.kerim.lightboot.application.headers.Header;
 import com.kerim.lightboot.application.headers.HeaderFactory;
 
-import java.lang.reflect.Method;
-
-public class BeanFactoryImpl implements BeanFactory {
+public class HeaderBeanPairFactoryImpl implements HeaderBeanPairFactory {
     private HeaderFactory headerFactory;
 
-    public BeanFactoryImpl(HeaderFactory headerFactory) {
+    public HeaderBeanPairFactoryImpl(HeaderFactory headerFactory) {
         this.headerFactory = headerFactory;
     }
 
@@ -16,6 +14,14 @@ public class BeanFactoryImpl implements BeanFactory {
     public <T> HeaderBeanPair createHeaderBeanPair(Class<?> beanClass, T bean) {
         return new HeaderBeanPair(
                 headerFactory.createHeader(beanClass),
+                bean
+        );
+    }
+
+    @Override
+    public <T> HeaderBeanPair createHeaderBeanPair(Class<?> beanClass, String name, T bean) {
+        return new HeaderBeanPair(
+                headerFactory.createHeader(name, beanClass),
                 bean
         );
     }

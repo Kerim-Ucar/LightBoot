@@ -2,6 +2,7 @@ package com.kerim.lightboot.application.context;
 
 import com.kerim.lightboot.Test;
 import com.kerim.lightboot.application.headers.Header;
+import com.kerim.lightboot.exceptions.NoBeanFound;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +22,14 @@ public class ApplicationContext implements Context{
     }
 
     @Override @SuppressWarnings("unchecked")
-    public <T> T get(Header header) {
-        return (T) context.get(header);
+    public <T> T get(Header header) throws NoBeanFound {
+        T bean = (T) context.get(header);
+
+        if (bean == null) {
+            throw new NoBeanFound("Bean could not be found");
+        }
+
+        return bean;
     }
 
     public void test() {

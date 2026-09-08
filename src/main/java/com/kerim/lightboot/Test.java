@@ -1,7 +1,5 @@
 package com.kerim.lightboot;
 
-import com.kerim.lightboot.annotations.Bean;
-
 public class Test {
     String s;
 

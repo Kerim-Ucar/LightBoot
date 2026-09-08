@@ -1,24 +1,33 @@
 package com.kerim.lightboot.application.beans;
 
 import com.kerim.lightboot.TestBeanObj;
+import com.kerim.lightboot.annotations.application.Bean;
 import com.kerim.lightboot.application.AnnotatedClassesHolder;
 import com.kerim.lightboot.application.ApplicationComponent;
 import com.kerim.lightboot.application.context.ApplicationContext;
 import com.kerim.lightboot.application.context.Context;
-import com.kerim.lightboot.application.headers.SimpleHeaderFactory;
 import com.kerim.lightboot.utility.BeanExtractor;
-import com.kerim.lightboot.utility.ClassExtractor;
-import com.kerim.lightboot.utility.ClassParser;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-public class ApplicationBeanManager implements BeanManager, ApplicationComponent {
-    private BeanFactory beanFactory = new BeanFactoryImpl(new SimpleHeaderFactory());
-    private BeanExtractor beanExtractor = new BeanExtractor();
-    private AnnotatedClassesHolder annotatedClassesHolder = new AnnotatedClassesHolder(new ClassParser(), new ClassExtractor());
-    private ApplicationContext applicationContext = new ApplicationContext();
+/***
+ *
+ */
+public class ApplicationContextHandler implements ContextHandler, ApplicationComponent {
+    private final String LOGGER_STRING_RETURN = "[ApplicationContextHandler]";
 
+    private HeaderBeanPairFactory beanFactory;
+    private BeanExtractor beanExtractor;
+    private AnnotatedClassesHolder annotatedClassesHolder;
+    private ApplicationContext applicationContext;
+
+    public ApplicationContextHandler(HeaderBeanPairFactory beanFactory, BeanExtractor beanExtractor, AnnotatedClassesHolder annotatedClassesHolder, ApplicationContext applicationContext) {
+        this.beanFactory = beanFactory;
+        this.beanExtractor = beanExtractor;
+        this.annotatedClassesHolder = annotatedClassesHolder;
+        this.applicationContext = applicationContext;
+    }
 
     //get class from annotatedClassHolder, then use beanextractor to get those beans, then turn those beans into pairs, and then unbox them and add to app context
     @Override
@@ -58,7 +67,12 @@ public class ApplicationBeanManager implements BeanManager, ApplicationComponent
         HeaderBeanPair[] headerBeanPairs = new HeaderBeanPair[beans.length];
 
         for (int i = 0; i < beans.length; i++) {
-            headerBeanPairs[i] = beanFactory.createHeaderBeanPair(methods[i].getReturnType(), beans[i]);
+            if(methods[i].getAnnotation(Bean.class).value().isEmpty()) {
+                headerBeanPairs[i] = beanFactory.createHeaderBeanPair(methods[i].getReturnType(), beans[i]);
+            } else {
+                headerBeanPairs[i] = beanFactory.createHeaderBeanPair(methods[i].getReturnType(), methods[i].getAnnotation(Bean.class).value(), beans[i]);
+            }
+
         }
 
         return headerBeanPairs;
@@ -85,8 +99,8 @@ public class ApplicationBeanManager implements BeanManager, ApplicationComponent
     }
 
     @Override
-    public void startup() {
+    public String startup() {
         addBeansToContext();
-        System.out.println("ApplicationBeanManager startup");
+        return LOGGER_STRING_RETURN;
     }
 }
