@@ -1,4 +1,5 @@
 package com.kerim.lightboot.application;
 
-public class Application {
+public interface Application {
+    void run();
 }

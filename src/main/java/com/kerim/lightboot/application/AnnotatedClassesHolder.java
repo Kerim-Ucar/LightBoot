@@ -10,6 +10,8 @@ import com.kerim.lightboot.utility.ClassParser;
 import java.io.IOException;
 
 public class AnnotatedClassesHolder implements ApplicationComponent{
+    public static final int ANNOTATED_TYPES = 2;
+
     private String[] allClassPaths;
     private Class<?>[] configurationClasses;
     private Class<?>[] serviceClasses;
@@ -47,6 +49,6 @@ public class AnnotatedClassesHolder implements ApplicationComponent{
         } catch (IOException | NoPathFound exception) {
             throw new NoPathFound(exception.getMessage());
         }
-
+        System.out.println("AnnotatedClassesHolder startup");
     }
 }
