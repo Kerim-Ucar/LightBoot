@@ -4,7 +4,7 @@ import com.kerim.lightboot.application.headers.Header;
 import com.kerim.lightboot.application.headers.HeaderFactory;
 
 public class HeaderBeanPairFactoryImpl implements HeaderBeanPairFactory {
-    private HeaderFactory headerFactory;
+    private final HeaderFactory headerFactory;
 
     public HeaderBeanPairFactoryImpl(HeaderFactory headerFactory) {
         this.headerFactory = headerFactory;

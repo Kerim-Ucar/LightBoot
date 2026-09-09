@@ -6,16 +6,18 @@ import java.lang.reflect.Method;
 
 public class BeanExtractor {
 
-    public BeanExtractor() {}
+    public BeanExtractor() {
+    }
 
-    public Method[] getBeanMethods(Class<?> clazz){
-        Method[] methods  = clazz.getDeclaredMethods();
+    public Method[] getBeanMethods(Class<?> clazz) {
+        Method[] methods = clazz.getDeclaredMethods();
         Method[] buf = new Method[methods.length];
         int bufIndex = 0;
 
-        for(Method method : methods){
-            if(method.isAnnotationPresent(Bean.class)) {
-                buf[bufIndex++] = method;}
+        for (Method method : methods) {
+            if (method.isAnnotationPresent(Bean.class)) {
+                buf[bufIndex++] = method;
+            }
         }
 
         Method[] methodsWithBeanAnnotation = new Method[bufIndex];
@@ -25,7 +27,7 @@ public class BeanExtractor {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getBeanObject(Method method){
+    public <T> T getBeanObject(Method method) {
         try {
             Object target = method.getDeclaringClass().getDeclaredConstructor().newInstance();
             return (T) method.invoke(target);

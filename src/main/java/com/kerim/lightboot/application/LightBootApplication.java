@@ -6,7 +6,6 @@ import com.kerim.lightboot.application.beans.HeaderBeanPairFactory;
 import com.kerim.lightboot.application.beans.HeaderBeanPairFactoryImpl;
 import com.kerim.lightboot.application.context.ApplicationContext;
 import com.kerim.lightboot.application.context.Context;
-import com.kerim.lightboot.application.headers.Header;
 import com.kerim.lightboot.application.headers.HeaderFactory;
 import com.kerim.lightboot.application.headers.SimpleHeaderFactory;
 import com.kerim.lightboot.utility.AutoInjectExtractor;

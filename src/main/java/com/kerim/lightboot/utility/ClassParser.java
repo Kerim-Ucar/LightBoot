@@ -12,7 +12,8 @@ public class ClassParser implements ApplicationComponent {
     private final String LOGGER_STRING_RETURN = "[ClassParser]";
     private final String OS_SLASH = getOSFileSystemSlashes();
 
-    public ClassParser() {}
+    public ClassParser() {
+    }
 
     private String[] getJavaPaths() throws IOException {
         Path start = Path.of("src/main/java");
@@ -23,7 +24,7 @@ public class ClassParser implements ApplicationComponent {
                     .map(Path::toString)
                     .filter(string -> string.endsWith(".java"))
                     .toArray(String[]::new);
-        } catch(IOException | NoPathFound e) {
+        } catch (IOException | NoPathFound e) {
             throw new NoPathFound("ClassParser.getJavaPaths() failed to find a java path.");
         }
     }
@@ -41,10 +42,10 @@ public class ClassParser implements ApplicationComponent {
     }
 
     public String[] getParsedJavaClassPaths() throws IOException {
-        try{
+        try {
             String[] javaPaths = getJavaPaths();
             return parseJavaPaths(javaPaths);
-        } catch(NoPathFound e) {
+        } catch (NoPathFound e) {
             throw new NoPathFound("ClassParser.getPaths() failed due to IO error or due to ClassParser.parseJavaPaths()");
         }
     }
@@ -53,14 +54,14 @@ public class ClassParser implements ApplicationComponent {
         String[] javaPaths = getJavaPaths();
         String[] packagePaths = parseJavaPaths(javaPaths);
 
-        for(String javaPath : packagePaths) {
+        for (String javaPath : packagePaths) {
             System.out.println(javaPath);
         }
     }
 
     private String getOSFileSystemSlashes() {
         String osName = System.getProperty("os.name");
-        if(osName.contains("Windows")) {
+        if (osName.contains("Windows")) {
             return "\\";
         } else {
             return "/";

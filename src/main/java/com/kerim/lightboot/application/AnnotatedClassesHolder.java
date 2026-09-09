@@ -8,7 +8,7 @@ import com.kerim.lightboot.utility.ClassParser;
 
 import java.io.IOException;
 
-public class AnnotatedClassesHolder implements ApplicationComponent{
+public class AnnotatedClassesHolder implements ApplicationComponent {
     private final String LOGGER_STRING_RETURN = "[AnnotatedClassesHolder]";
 
     public static final int ANNOTATED_TYPES = 2;
@@ -17,13 +17,13 @@ public class AnnotatedClassesHolder implements ApplicationComponent{
     private Class<?>[] configurationClasses;
     private Class<?>[] serviceClasses;
 
-    private ClassParser classParser;
-    private ClassExtractor classExtractor;
+    private final ClassParser classParser;
+    private final ClassExtractor classExtractor;
 
     public AnnotatedClassesHolder(
             ClassParser classParser,
             ClassExtractor classExtractor
-    ){
+    ) {
         this.classParser = classParser;
         this.classExtractor = classExtractor;
     }

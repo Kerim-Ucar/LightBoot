@@ -8,7 +8,8 @@ import java.util.Arrays;
 public class ClassExtractor implements ApplicationComponent {
     private final String LOGGER_STRING_RETURN = "[ClassExtractor]";
 
-    public ClassExtractor() {}
+    public ClassExtractor() {
+    }
 
     public Class<?> getClass(String className) {
         try {

@@ -7,7 +7,10 @@ import java.util.Map;
 
 public interface Context {
     <T> void register(Header header, T bean);
+
     <T> T get(Header header) throws NoBeanFound;
+
     Map<Header, Object> getContext();
+
     void printContext();
 }

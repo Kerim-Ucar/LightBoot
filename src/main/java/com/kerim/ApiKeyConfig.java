@@ -15,4 +15,9 @@ public class ApiKeyConfig {
     public DataHandler superDataHandler() {
         return new DataHandler("67890");
     }
+
+    @Bean
+    public DataUltraHandlerWrapper dataUltraHandlerWrapper() {
+        return new DataUltraHandlerWrapper("super12093", "921391");
+    }
 }

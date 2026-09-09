@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ApplicationContext implements Context{
+public class ApplicationContext implements Context {
 
     Map<Header, Object> context = new HashMap<Header, Object>();
     ArrayList<Header> headers = new ArrayList<Header>();
@@ -24,7 +24,8 @@ public class ApplicationContext implements Context{
         headers.add(header);
     }
 
-    @Override @SuppressWarnings("unchecked")
+    @Override
+    @SuppressWarnings("unchecked")
     public <T> T get(Header header) throws NoBeanFound {
         T bean = (T) context.get(header);
 
@@ -37,7 +38,7 @@ public class ApplicationContext implements Context{
 
     public Header lookUpHeader(String headerName) {
         for (Header header : headers) {
-            if(header.name().equals(headerName)) {
+            if (header.name().equals(headerName)) {
                 return header;
             }
         }
@@ -46,7 +47,7 @@ public class ApplicationContext implements Context{
 
     public Header lookUpHeader(Class<?> clazz) {
         for (Header header : headers) {
-            if(header.clazz().equals(clazz)) {
+            if (header.clazz().equals(clazz)) {
                 return header;
             }
         }

@@ -16,10 +16,10 @@ import java.util.ArrayList;
 public class ApplicationContextHandler implements ContextHandler, ApplicationComponent {
     private final String LOGGER_STRING_RETURN = "[ApplicationContextHandler]";
 
-    private HeaderBeanPairFactory beanFactory;
-    private BeanExtractor beanExtractor;
-    private AnnotatedClassesHolder annotatedClassesHolder;
-    private ApplicationContext applicationContext;
+    private final HeaderBeanPairFactory beanFactory;
+    private final BeanExtractor beanExtractor;
+    private final AnnotatedClassesHolder annotatedClassesHolder;
+    private final ApplicationContext applicationContext;
 
     public ApplicationContextHandler(HeaderBeanPairFactory beanFactory, BeanExtractor beanExtractor, AnnotatedClassesHolder annotatedClassesHolder, ApplicationContext applicationContext) {
         this.beanFactory = beanFactory;
@@ -64,7 +64,7 @@ public class ApplicationContextHandler implements ContextHandler, ApplicationCom
         HeaderBeanPair[] headerBeanPairs = new HeaderBeanPair[beans.length];
 
         for (int i = 0; i < beans.length; i++) {
-            if(methods[i].getAnnotation(Bean.class).value().isEmpty()) {
+            if (methods[i].getAnnotation(Bean.class).value().isEmpty()) {
                 headerBeanPairs[i] = beanFactory.createHeaderBeanPair(methods[i].getReturnType(), beans[i]);
             } else {
                 headerBeanPairs[i] = beanFactory.createHeaderBeanPair(methods[i].getReturnType(), methods[i].getAnnotation(Bean.class).value(), beans[i]);

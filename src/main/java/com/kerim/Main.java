@@ -21,10 +21,6 @@ public class Main {
     public static void getMem() {
         Runtime runtime = Runtime.getRuntime();
 
-        // Run the garbage collector first for more accurate active usage data
-        runtime.gc();
-
-        // Calculate memory metrics in bytes
         long totalMemory = runtime.totalMemory(); // Memory currently allocated to the JVM from the OS
         long freeMemory = runtime.freeMemory();   // Free memory within that allocated space
         long usedMemory = totalMemory - freeMemory; // Actual memory being used by your objects
