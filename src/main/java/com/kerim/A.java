@@ -4,12 +4,15 @@ import com.kerim.lightboot.annotations.application.AutoInject;
 import com.kerim.lightboot.annotations.application.Service;
 
 @Service
-public class ApiController {
+public class A {
 
     @AutoInject
-    private DataGetter dataGetter;
+    private B b;
 
-    public String getData() {
-        return dataGetter.getData();
+    public A(){
+    }
+
+    public A(B b) {
+        this.b = b;
     }
 }

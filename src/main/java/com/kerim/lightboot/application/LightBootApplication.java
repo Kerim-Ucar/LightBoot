@@ -6,6 +6,7 @@ import com.kerim.lightboot.application.beans.HeaderBeanPairFactory;
 import com.kerim.lightboot.application.beans.HeaderBeanPairFactoryImpl;
 import com.kerim.lightboot.application.context.ApplicationContext;
 import com.kerim.lightboot.application.context.Context;
+import com.kerim.lightboot.application.headers.Header;
 import com.kerim.lightboot.application.headers.HeaderFactory;
 import com.kerim.lightboot.application.headers.SimpleHeaderFactory;
 import com.kerim.lightboot.utility.AutoInjectExtractor;
@@ -154,10 +155,26 @@ public class LightBootApplication {
         return contextHandler;
     }
 
+    public HeaderFactory getHeaderFactory() {
+        return headerFactory;
+    }
+
+
+    public static <T> T lookUpBean(Class<?> clazz) {
+        Header header = LightBootApplication.getInstance().applicationContext.lookUpHeader(clazz);
+        return LightBootApplication.getInstance().applicationContext.get(header);
+    }
+
+    public static <T> T lookUpBean(String name) {
+        Header header = LightBootApplication.getInstance().applicationContext.lookUpHeader(name);
+        return LightBootApplication.getInstance().applicationContext.get(header);
+    }
+
     private void registerComponent(ApplicationComponent component) {
         component.startup();
         applicationComponents.add(component);
     }
+
 
 
 }

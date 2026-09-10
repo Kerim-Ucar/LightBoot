@@ -1,7 +1,7 @@
 package com.kerim;
 
 import com.kerim.lightboot.application.LightBootApplication;
-import com.kerim.lightboot.application.context.ApplicationContext;
+import com.kerim.lightboot.application.context.Context;
 import com.kerim.lightboot.application.headers.Header;
 
 import java.io.IOException;
@@ -12,9 +12,23 @@ public class Main {
 
         LightBootApplication.run();
 
-        ApplicationContext context = (ApplicationContext) LightBootApplication.getInstance().getContext();
+        ServerApi serverApi = LightBootApplication.lookUpBean(ServerApi.class);
+        Context context = LightBootApplication.getInstance().getContext();
+
+        A a = new A();
+
+        Header header = LightBootApplication.getInstance().getHeaderFactory().createHeader("test bean for thing", A.class);
+
+        context.register(header, a);
+
         context.printContext();
+
+        A a2 = context.get(header);
+
+
+
         getTime(start);
+        getMem();
     }
 
 
