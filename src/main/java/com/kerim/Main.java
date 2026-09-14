@@ -25,6 +25,8 @@ public class Main {
 
         A a2 = context.get(header);
 
+        serverApi.start();
+
 
 
         getTime(start);
