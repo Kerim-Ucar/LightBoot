@@ -65,10 +65,12 @@ public class ApplicationContext implements Context {
 
     @Override
     public void printContext() {
+
+        System.out.println("[ApplicationContext] registered beans:");
         for (Map.Entry<Header, Object> entry : context.entrySet()) {
             Header header = entry.getKey();
             Object bean = entry.getValue();
-            System.out.println(header.name() + " (" + header.clazz().getSimpleName() + ") -> " + bean);
+            System.out.println("  " + header.name() + " (" + header.clazz().getSimpleName() + ") -> " + bean);
         }
     }
 

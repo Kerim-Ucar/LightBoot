@@ -30,10 +30,21 @@ public class ClassExtractor implements ApplicationComponent {
     }
 
     public Class<?>[] getClasses(String[] classPaths, Class<? extends Annotation> annotation) {
+        return getClasses(classPaths, annotation, false);
+    }
+
+    public Class<?>[] getClasses(String[] classPaths, Class<? extends Annotation> annotation, boolean directOnly) {
         return Arrays.stream(classPaths)
                 .map(this::getClass)
-                .filter(clazz -> clazz.isAnnotationPresent(annotation))
+                .filter(clazz -> hasAnnotation(clazz, annotation, directOnly))
                 .toArray(Class<?>[]::new);
+    }
+
+    private boolean hasAnnotation(Class<?> clazz, Class<? extends Annotation> annotation, boolean directOnly) {
+        if (directOnly) {
+            return clazz.getDeclaredAnnotation(annotation) != null;
+        }
+        return clazz.isAnnotationPresent(annotation);
     }
 
     public void test() {

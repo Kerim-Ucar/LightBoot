@@ -9,6 +9,8 @@ import com.kerim.lightboot.application.context.Context;
 import com.kerim.lightboot.application.headers.Header;
 import com.kerim.lightboot.application.headers.HeaderFactory;
 import com.kerim.lightboot.application.headers.SimpleHeaderFactory;
+import com.kerim.lightboot.connectivity.http.HttpGetRouteRegistry;
+import com.kerim.lightboot.connectivity.http.HttpServerComponent;
 import com.kerim.lightboot.utility.AutoInjectExtractor;
 import com.kerim.lightboot.utility.BeanExtractor;
 import com.kerim.lightboot.utility.ClassExtractor;
@@ -37,6 +39,8 @@ public class LightBootApplication {
     private final HeaderBeanPairFactory headerBeanPairFactory;
     private final AnnotatedClassesHolder annotatedClassesHolder;
     private final ArrayList<ApplicationComponent> applicationComponents;
+    private int httpServerPort = HttpServerComponent.DEFAULT_PORT;
+    private HttpServerComponent httpServerComponent;
 
     private LightBootApplication(
             ClassParser classParser,
@@ -111,17 +115,62 @@ public class LightBootApplication {
         LightBootApplication instance = applicationConfiguration == null
                 ? getInstance()
                 : getInstance(applicationConfiguration);
-        instance.start();
+        try {
+            instance.start();
+        } catch (InterruptedException exception) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("LightBoot application interrupted", exception);
+        }
     }
 
-    private void start() {
+    public static void run(int httpServerPort) {
+        LightBootApplication instance = getInstance();
+        instance.httpServerPort = httpServerPort;
+        run(null);
+    }
+
+    public static void run(ApplicationConfiguration applicationConfiguration, int httpServerPort) {
+        LightBootApplication instance = getInstance(applicationConfiguration);
+        instance.httpServerPort = httpServerPort;
+        run(applicationConfiguration);
+    }
+
+    private void start() throws InterruptedException {
         registerComponent(classParser);
         registerComponent(contextHandler);
         injectBeans();
+        startHttpServer();
+        applicationContext.printContext();
+        keepHttpServerRunning();
+    }
+
+    private void startHttpServer() {
+        HttpGetRouteRegistry routeRegistry = new HttpGetRouteRegistry(
+                annotatedClassesHolder,
+                applicationContext
+        );
+        if (routeRegistry.getRoutes().isEmpty()) {
+            return;
+        }
+
+        httpServerComponent = new HttpServerComponent(routeRegistry, httpServerPort);
+        registerComponent(httpServerComponent);
+    }
+
+    private void keepHttpServerRunning() throws InterruptedException {
+        if (httpServerComponent == null) {
+            return;
+        }
+
+        httpServerComponent.awaitStartup();
+        System.out.println("HTTP server listening on http://localhost:" + httpServerComponent.getPort());
+        httpServerComponent.awaitRunning();
     }
 
     private void injectBeans() {
+        injectBeans(annotatedClassesHolder.getComponentClasses());
         injectBeans(annotatedClassesHolder.getServiceClasses());
+        injectBeans(annotatedClassesHolder.getControllerClasses());
     }
 
     private void injectBeans(Class<?>[] classes) {

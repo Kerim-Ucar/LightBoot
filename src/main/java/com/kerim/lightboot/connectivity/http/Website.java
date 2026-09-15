@@ -1,6 +1,7 @@
 package com.kerim.lightboot.connectivity.http;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -36,16 +37,23 @@ public class Website {
         return requestMap;
     }
 
+    public <T> HttpResponse<T> sendBuiltinRequest() throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .GET()
+                .build();
+        return SendRequest(request, HttpType.GET);
+    }
+
+
     @SuppressWarnings("unchecked")
     private <T> HttpResponse<T> SendRequest(HttpRequest request, HttpType type) throws IOException, InterruptedException {
-        HttpResponse<T> r = (HttpResponse<T>) client.send(request, HttpResponse.BodyHandlers.ofString());
-        return r;
+        return (HttpResponse<T>) client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
     @SuppressWarnings("unchecked")
     private <T> HttpResponse<T> sendAsyncRequest(HttpRequest request, HttpType type) {
-        HttpResponse<T> r = (HttpResponse<T>) client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
-        return r;
+        return (HttpResponse<T>) client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
     }
 
     public <T> HttpResponse<T> SendRequest(HttpRequest request, String alias, HttpType type, PollingMethod pollingMethod) throws IOException, InterruptedException {
